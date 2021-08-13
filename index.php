@@ -208,6 +208,10 @@ require("ui.php");
     <p class="w3-large">Mattia Mascarello, <?php echo date("Y"); ?></p>
     <a href="https://www.iubenda.com/privacy-policy/16543360" rel="noreferrer nofollow" target="_blank">Privacy Policy</a>
 - <a href="#" role="button" class="iubenda-advertising-preferences-link">Personalizza tracciamento</a>
+	  <br /><a href="https://github.com/MatMasIt/mordApp">Codice sorgente</a>
+	  
+	  <br/>
+	  <br/>
   </div>
 
 </body>
