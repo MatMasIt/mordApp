@@ -43,6 +43,18 @@ function UIauth($append = "")
             <button class="w3-btn w3-teal">Accedi</button>
         </p>
     </form>
+    
+    <form class="w3-container w3-card-4" method="GET" action="resend.php">
+        <input type="hidden" name="action" value="signIn">
+        <h2 class="w3-text-teal">Recupera account</h2>
+        <p>
+            <label class="w3-text-teal"><b>Email </b></label>
+            <input class="w3-input w3-border" name="email" type="email" requried>
+        </p>
+        <p>
+            <button class="w3-btn w3-teal">Recupera</button>
+        </p>
+    </form>
 
     <form class="w3-container w3-card-4" method="POST" action="">
         <input type="hidden" name="action" value="signUp">
@@ -153,7 +165,7 @@ function UIsignedUp($data)
             return UIauth("<h2 style=\"color:red\">Occorre una email @liceococito.it</h2>");
             break;
     }
-    email("Nuovo Account", 'Grazie per esserti registratə su MordApp<br /><a class="w3-btn w3-teal" href="http://127.0.0.1:9999/?action=verifyFirst&token=' . $res . '">Verifica il mio account</a>', $data["email"], $data["name"]);
+    email("Nuovo Account", 'Grazie per esserti registratə su MordApp<br /><a class="w3-btn w3-teal" href="https://mordapp.altervista.org/app/1/?action=verifyFirst&token=' . $res . '">Verifica il mio account</a>', $data["email"], $data["name"]);
 ?>
     <div class="w3-container w3-padding-32 w3-theme-d1">
         <h1>Mordapp</h1>
@@ -506,13 +518,12 @@ function editOrder($token, $orderId)
                 <br />
                 <br />
                 <?php
-                if($new){
-                    ?><input type="submit" class="w3-button w3-teal w3-right" value="Ordina"><?php
-                }
-                else{
-                    ?><input type="submit" class="w3-button w3-teal w3-right" value="Aggiorna"><?php
-                }
-                ?>
+                if ($new) {
+                ?><input type="submit" class="w3-button w3-teal w3-right" value="Ordina"><?php
+                                                                                            } else {
+                                                                                                ?><input type="submit" class="w3-button w3-teal w3-right" value="Aggiorna"><?php
+                                                                                            }
+                                                                                                ?>
                 <br />
                 <br />
                 <br />
@@ -619,18 +630,24 @@ function manageAccount($token)
                     foreach ($GLOBALS["classesWhitelist"] as $wle) {
                         if ($wle == "Docenti") {
                     ?>
-                            <option value="teacher" <?php if($u["classe"]==$wle){ echo "selected";} ?>><?php echo htmlentities($wle); ?></option>
+                            <option value="teacher" <?php if ($u["classe"] == $wle) {
+                                                        echo "selected";
+                                                    } ?>><?php echo htmlentities($wle); ?></option>
                         <?php
                             continue;
                         }
                         if ($wle == "altro") {
                         ?>
-                            <option value="other" <?php if($u["classe"]==$wle){ echo "selected";} ?>>Altro</option>
+                            <option value="other" <?php if ($u["classe"] == $wle) {
+                                                        echo "selected";
+                                                    } ?>>Altro</option>
                         <?php
                             continue;
                         }
                         ?>
-                        <option value="<?php echo htmlentities($wle); ?>" <?php if($u["classe"]==$wle){ echo "selected";} ?>><?php echo htmlentities($wle); ?></option>
+                        <option value="<?php echo htmlentities($wle); ?>" <?php if ($u["classe"] == $wle) {
+                                                                                echo "selected";
+                                                                            } ?>><?php echo htmlentities($wle); ?></option>
                     <?php
 
                     }
@@ -640,6 +657,11 @@ function manageAccount($token)
             <p>
                 <button class="w3-btn w3-teal">Salva</button>
             </p>
+        </form>
+        <form class="w3-container w3-card-4" method="POST" onsubmit="return confirm('Questa azione è irreversibile');">
+            <input type="hidden" name="action" value="deleteMe">
+            <input type="hidden" name="sessionToken" value="<?php echo htmlentities($token); ?>">
+            <input type="submit" class="w3-btn w3-red" value="Elimina account">
         </form>
         <br />
     <?php
@@ -1273,11 +1295,11 @@ function dishesStaff($token, $add = "")
                     },
                     {
                         title: "Nome",
-                        editor:true,
+                        editor: true,
                         field: "name",
                     }, {
                         title: "Prezzo Totale",
-                        editor:true,
+                        editor: true,
                         field: "price",
                         formatter: "money",
                         formatterParams: {

@@ -31,6 +31,9 @@ require("ui.php");
 <link rel="preload" as="script" href="https://cdn.iubenda.com/cs/tcf/stub-v2.js"/>
 <script src="https://cdn.iubenda.com/cs/tcf/stub-v2.js"></script>
 <script>
+if (location.protocol !== 'https:') {
+    location.replace(`https:${location.href.substring(location.protocol.length)}`);
+}
 (_iub=self._iub||[]).csConfiguration={
 	cookiePolicyId: 16543360,
 	siteId: 2323189,
@@ -189,6 +192,11 @@ require("ui.php");
       break;
     case "menuSTAFF":
       dishesStaff($_POST["sessionToken"]);
+      break;
+    case "deleteMe":
+      $r=deleteMe($_POST["sessionToken"]);
+      if(!$r) mainMenu($_POST["sessionToken"], '<h2 style="color:green">Errore</h2>');
+      else UIauth();
       break;
     case "processDishes":
       if(!$newView){

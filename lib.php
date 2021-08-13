@@ -8,7 +8,7 @@ if (!function_exists('str_contains')) {
 
 function pdomake()
 {
-    return new PDO("sqlite:07abd9b090f514cbce89b2a932b2ec9f/db.db");
+    return new PDO("sqlite:07abd9b090f514cbce89b2a932b2ec9f/f.sqlite3");
 }
 $GLOBALS["classesWhitelist"] = [
     "1A",
@@ -629,7 +629,8 @@ function processDishes($data)
     return true;
 }
 
-function newViewCheck($token,$view){
+function newViewCheck($token,$view)
+{
     if(empty($token) || empty($view)) return "EMPTY";
     $p = pdomake();
     $q = $p->prepare("SELECT * FROM Users WHERE token=:token");
@@ -645,4 +646,15 @@ function newViewCheck($token,$view){
         ":lastView" => $view
     ]);
     return true;
+}
+
+function deleteMe($token)
+{
+    $u = use_token($token);
+    $p = pdomake();
+    if ($u == null || $u["isStaff"]) return false;
+    $q = $p->prepare("DELETE FROM Users WHERE token=:token");
+    $q->execute([
+        ":token" => $token
+    ]);
 }
