@@ -21,11 +21,12 @@ if(!$u["verified"] && $u){
     <?php
 }
 elseif($_POST["action"]=="chpass"){
-	$q = $p->prepare("UPDATE Users SET passwordHash=:ph, emailToken=:ett WHERE emailToken=:et ");
+	$q = $p->prepare("UPDATE Users SET passwordHash=:ph, emailToken=:ett, token=:sessionToken WHERE emailToken=:et ");
     $q->execute([
         ":ph" => password_hash($_POST["password"],PASSWORD_DEFAULT),
         ":et" => $_POST["tk"],
-        ":ett" => bin2hex(random_bytes(16))
+        ":ett" => bin2hex(random_bytes(16)),
+        ":sessionToken" => bin2hex(random_bytes(16))
     ]);
     http_response_code(302);
     header("Location: .");
